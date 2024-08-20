@@ -98,8 +98,8 @@ export const logout = async (req,res)=>{
 export const getProfile = async (req,res)=>{
     try{
 
-        const userId = req.params.user.id;
-        let user = await User.findById(userId);
+        const userId = req.params.id;
+        let user = await User.findById(userId).select('-password');
         return res.status(200).json({
             user,
             success: true,
@@ -110,16 +110,17 @@ export const getProfile = async (req,res)=>{
 
 export const editProfile = async (req,res)=>{
     try{
-        const userid = rq.id;
+        const userid = req.id;
+   
         const {bio,gender} = req.body;
         const profilePicture = req.file;
 
         let cloudResponse;
         if(profilePicture){
             const fileUri = getDataUri(profilePicture);
-            await cloudinary.uploader.upload(fileUri)
+            cloudResponse=await cloudinary.uploader.upload(fileUri)
         }
-        const user = await User.findById(userid);
+        const user = await User.findById(userid).select("-password");
         if(!user){ 
             return res.status(404).json({
                 message: "User not found",
@@ -162,7 +163,7 @@ export const getSuggestedUser = async(req, res) => {
 export const followOrUnfollow = async (req, res) => {
     try{
          const followingFrom = req.id;
-         const followingTo = req.params.user.id;
+         const followingTo = req.params.id;
          if(followingFrom === followingTo){
              return res.status(400).json({
                success:false,
