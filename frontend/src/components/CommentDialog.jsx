@@ -57,67 +57,78 @@ const CommentDialog = ({ open, setOpen }) => {
   }
 
   return (
-    <Dialog open={open}>
-      <DialogContent onInteractOutside={() => setOpen(false)} className="max-w-5xl p-0 flex flex-col bg-gray-800 text-white rounded-lg">
-        <div className='flex flex-1'>
-          <div className='w-1/2'>
-            <img
-              src={selectedPost?.image}
-              alt="post_img"
-              className='w-full h-full object-cover rounded-l-lg'
-            />
-          </div>
-          <div className='w-1/2 flex flex-col justify-between'>
-            <div className='flex items-center justify-between p-4'>
-              <div className='flex gap-3 items-center'>
-                <Link>
-                  <Avatar>
-                    <AvatarImage src={selectedPost?.author?.profilePicture} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </Link>
-                <div>
-                  <Link className='font-semibold text-xs text-white'>{selectedPost?.author?.username}</Link>
-                </div>
-              </div>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <MoreHorizontal className='cursor-pointer text-white' />
-                </DialogTrigger>
-                <DialogContent className="flex flex-col items-center text-sm text-center bg-gray-900 text-white rounded-lg">
-                  <div className='cursor-pointer w-full text-red-500 font-bold'>
-                    Unfollow
-                  </div>
-                  <div className='cursor-pointer w-full'>
-                    Add to favorites
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-            <hr className='border-gray-700' />
-            <div className='flex-1 overflow-y-auto max-h-96 p-4'>
-              {
-                comment.map((comment) => <Comment key={comment?._id} comment={comment} />)
-              }
-            </div>
-            <div className='p-4 bg-gray-900 rounded-b-lg'>
-              <div className='flex items-center gap-2'>
-                <input
-                  type="text"
-                  value={text}
-                  onChange={changeEventHandler}
-                  placeholder='Add a comment...'
-                  className='w-full outline-none border text-sm border-gray-600 bg-gray-800 text-white p-2 rounded'
-                />
-                <Button disabled={!text.trim()} onClick={sendMessageHandler} variant="outline" className='text-white border-gray-600'>Send</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
+    
+    <div>
+      
+      <Dialog open={open}>
+  
+ 
+ 
+ 
+       <DialogContent onInteractOutside={() => setOpen(false)} className="max-w-5xl p-0 flex flex-col bg-gray-800 text-white rounded-lg">
+ 
+       
+ 
+         <div className=' z-10  flex flex-1 min-h-[60vh] max-h-[90vh]'>
+           <div className='w-1/2 hidden md:flex '>
+             <img
+               src={selectedPost?.image}
+               alt="post_img"
+               className='w-full h-full object-cover rounded-l-lg'
+             />
+           </div>
+           <div className='w-full p-2 md:w-1/2 flex flex-col justify-between'>
+             <div className='flex items-center justify-between p-4'>
+               <div className='flex gap-3 items-center'>
+                 <Link>
+                   <Avatar>
+                     <AvatarImage src={selectedPost?.author?.profilePicture} />
+                     <AvatarFallback>CN</AvatarFallback>
+                   </Avatar>
+                 </Link>
+                 <div>
+                   <Link className='font-semibold text-xs text-white'>{selectedPost?.author?.username}</Link>
+                 </div>
+               </div>
+ 
+               <Dialog>
+                 <DialogTrigger asChild>
+                   <MoreHorizontal className='cursor-pointer text-white' />
+                 </DialogTrigger>
+                 <DialogContent className="flex flex-col items-center text-sm text-center bg-gray-900 text-white rounded-lg">
+                   <div className='cursor-pointer w-full text-red-500 font-bold'>
+                     Unfollow
+                   </div>
+                   <div className='cursor-pointer w-full'>
+                     Add to favorites
+                   </div>
+                 </DialogContent>
+               </Dialog>
+             </div>
+             <hr className='border-gray-700' />
+             <div className='flex-1 overflow-y-auto max-h-96 p-4'>
+               {
+                 comment.map((comment) => <Comment key={comment?._id} comment={comment} />)
+               }
+             </div>
+             <div className='p-4 bg-gray-900 rounded-b-lg'>
+               <div className='flex items-center gap-2'>
+                 <input
+                   type="text"
+                   value={text}
+                   onChange={changeEventHandler}
+                   placeholder='Add a comment...'
+                   className='w-full outline-none border text-sm border-gray-600 bg-gray-800 text-white p-2 rounded'
+                 />
+                 <Button disabled={!text.trim()} onClick={sendMessageHandler} variant="outline" className='text-zinc-900 border-gray-600'>Send</Button>
+               </div>
+             </div>
+           </div>
+         </div>
+       </DialogContent>
+     </Dialog>
+    </div>
+   )
 }
 
 export default CommentDialog;

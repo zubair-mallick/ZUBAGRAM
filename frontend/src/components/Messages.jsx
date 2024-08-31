@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
@@ -12,12 +12,24 @@ const Messages = ({ selectedUser }) => {
     const { messages } = useSelector(store => store.chat);
     const { user } = useSelector(store => store.auth);
 
-    return (
-        <div className='relative flex-1 p-4 overflow-y-auto bg-cover bg-center '  style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1636955890525-84c5fa482c85?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' ,
-            backgroundAttachment: 'fixed', 
-            filter: 'brightness(0.8)'
-      }}>
-      
+      // Create a ref to reference the end of the message list
+      const messagesEndRef = useRef(null);
+
+      // Scroll to the bottom when the component mounts or when messages change
+      useEffect(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, [messages]);
+  
+
+      return (
+        <div 
+            className='relative flex-1 p-4 overflow-y-auto bg-cover bg-center'
+            style={{ 
+                backgroundImage: 'url("https://images.unsplash.com/photo-1636955890525-84c5fa482c85?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+                backgroundAttachment: 'fixed',
+                filter: 'brightness(0.8)'
+            }}
+        >
             <div className='relative z-10 flex flex-col gap-3'>
                 <div className='flex justify-center mb-4'>
                     <div className='flex flex-col items-center'>
@@ -39,6 +51,8 @@ const Messages = ({ selectedUser }) => {
                             </div>
                         </div>
                     ))}
+                    {/* Add a div at the end to reference for scrolling */}
+                    <div ref={messagesEndRef} />
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 const ChatPage = () => {
     const [textMessage, setTextMessage] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
     const { user, suggestedUsers, selectedUser } = useSelector(store => store.auth);
     const { onlineUsers, messages } = useSelector(store => store.chat);
     const { id } = useParams();
@@ -79,69 +80,91 @@ const ChatPage = () => {
             {/* Blur Effect */}
             <div className='absolute inset-0 backdrop-blur-sm'></div>
 
+            {/* Sidebar Toggle Button */}
+            <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className='absolute left-2 z-30 bg-gray-800 bg-opacity-30 text-white p-2 rounded-full focus:outline-none'
+                style={{
+                    top: '50%', // Center the button vertically
+                    transform: 'translateY(-50%)', // Adjust for perfect centering
+                    zIndex: 90, // Ensure the button is on top of all elements
+                }}
+            >
+                {isSidebarOpen ? <ChevronLeft /> : <ChevronRight />}
+            </button>
+
             {/* Chat List Section */}
-            <aside className='relative z-10 w-1/3 md:w-1/3 lg:w-1/5 bg-gray-800 bg-opacity-70 border-y-0 border-gray-900 border-4 flex-shrink-0 p-2 md:p-4 overflow-auto rounded-l-lg shadow-lg'>
-                <div className='head shadow-2xl ml-2 uppercase rounded-lg bg-opacity-25'>
-                    <h1 className='font-bold text-2xl ml-3 mb-4 text-white bg-clip-text bg-gradient-to-r from-blue-500 to-green-500'>
-                        {user?.username}
-                    </h1>
-                    <hr className='mb-4 border-gray-900 border-2 rounded-md' />
-                </div>
-                {/* Search Input */}
-                <Input
-                    type="text"
-                    placeholder="Search users..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className='mb-4 p-2 bg-gray-700 text-white rounded-lg focus:border-zinc-800'
-                />
-                <div className='space-y-2'>
-                    {filteredSuggestedUsers.map((suggestedUser) => {
-                        const isOnline = onlineUsers.includes(suggestedUser?._id);
-                        return (
-                            <div
-                                key={suggestedUser?._id}
-                                onClick={() => dispatch(setSelectedUser(suggestedUser))}
-                                className='relative flex gap-3 items-center p-3 rounded border border-gray-600 cursor-pointer transition-transform duration-300 hover:scale-105'
-                                style={{
-                                    backgroundImage: 'url(https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGNvbG9yfGVufDB8fDB8fHwy)',
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    backgroundBlendMode: 'overlay'
-                                }}
-                            >
-                                {/* Dark Overlay */}
-                                <div className='absolute inset-0 bg-black opacity-70 rounded'></div>
+            <aside
+                className={`fixed top-0 md:w-1/3 lg:1/4 left-0 h-full bg-gray-800 bg-opacity-70 border-y-0 border-gray-900 border-4 p-2 md:p-4 overflow-auto shadow-lg transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0 w-screen' : '-translate-x-full w-0'}`}
+                style={{
+                    zIndex: 80, // Ensure the sidebar is above other elements but below the toggle button
+                }}
+            >
+                <div className={`  flex flex-col overflow-x-hidden p-8 ${isSidebarOpen ? 'visible' : 'invisible'}`}
+                
+                >
+                    <div className='head shadow-2xl ml-2 uppercase rounded-lg bg-opacity-25'>
+                        <h1 className='font-bold text-2xl ml-3 mb-4 text-white bg-clip-text bg-gradient-to-r from-blue-500 to-green-500'>
+                            {user?.username}
+                        </h1>
+                        <hr className='mb-4 border-gray-900 border-2 rounded-md' />
+                    </div>
+                    {/* Search Input */}
+                    <Input
+                        type="text"
+                        placeholder="Search users..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className='mb-4 p-2 bg-gray-700 text-white rounded-lg focus:border-zinc-800'
+                    />
+                    <div className='space-y-2'>
+                        {filteredSuggestedUsers.map((suggestedUser) => {
+                            const isOnline = onlineUsers.includes(suggestedUser?._id);
+                            return (
+                                <div
+                                    key={suggestedUser?._id}
+                                    onClick={() => dispatch(setSelectedUser(suggestedUser))}
+                                    className='relative flex gap-3 items-center p-3 rounded border border-gray-600 cursor-pointer transition-transform duration-300 hover:scale-105'
+                                    style={{
+                                        backgroundImage: 'url(https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGNvbG9yfGVufDB8fDB8fHwy)',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        backgroundBlendMode: 'overlay'
+                                    }}
+                                >
+                                    {/* Dark Overlay */}
+                                    <div className='absolute inset-0 bg-black opacity-70 rounded'></div>
 
-                                {/* Gradient Fade Effect */}
-                                <div className='absolute inset-0'>
-                                    <div className='absolute inset-0 bg-gradient-to-r from-transparent via-black to-transparent' style={{ height: '100%', width: '15%' }}></div>
-                                    <div className='absolute inset-0 bg-gradient-to-l from-transparent via-black to-transparent' style={{ height: '100%', width: '15%' }}></div>
+                                    {/* Gradient Fade Effect */}
+                                    <div className='absolute inset-0'>
+                                        <div className='absolute inset-0 bg-gradient-to-r from-transparent via-black to-transparent' style={{ height: '100%', width: '15%' }}></div>
+                                        <div className='absolute inset-0 bg-gradient-to-l from-transparent via-black to-transparent' style={{ height: '100%', width: '15%' }}></div>
+                                    </div>
+
+                                    {/* Reflection Effect */}
+                                    <div className='absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-30'></div>
+
+                                    <Avatar className='relative z-10 w-8 h-8 md:w-12 md:h-12'>
+                                        <AvatarImage src={suggestedUser?.profilePicture} />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                    <div className='relative z-10 flex flex-col '>
+                                        <span className='font-medium text-gray-200'>{suggestedUser?.username}</span>
+                                        <span className={`text-xs font-bold ${isOnline ? 'text-green-400' : 'text-red-500'}`}>{isOnline ? 'online' : 'offline'}</span>
+                                    </div>
                                 </div>
-
-                                {/* Reflection Effect */}
-                                <div className='absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-30'></div>
-
-                                <Avatar className='relative z-10 w-8 h-8 md:w-12 md:h-12'>
-                                    <AvatarImage src={suggestedUser?.profilePicture} />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <div className='relative z-10 flex flex-col '>
-                                    <span className='font-medium text-gray-200'>{suggestedUser?.username}</span>
-                                    <span className={`text-xs font-bold ${isOnline ? 'text-green-400' : 'text-red-500'}`}>{isOnline ? 'online' : 'offline'}</span>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
             </aside>
 
             {/* Chat Area Section */}
-            <main className='relative z-10 flex-1 flex flex-col '>
+            <main className='relative z-10 flex-1 flex flex-col'>
                 {selectedUser ? (
                     <>
                         <header
-                            className='flex items-center px-2 md:px-4 py-2 border-b border-gray-700 relative backdrop-blur-3xl'
+                            className='flex items-center px-9  py-4 border-b border-gray-700 relative backdrop-blur-3xl'
                             style={{
                                 backgroundImage: 'url("https://images.unsplash.com/photo-1636956005303-6d19b07b2138?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
                                 backgroundSize: 'cover',
@@ -172,26 +195,30 @@ const ChatPage = () => {
                             }}
                         >
                             {/* Overlay with blur effect */}
-                            <div className='absolute  bg-black opacity-30'></div>
+                            <div className='absolute inset-0 bg-black opacity-50'></div>
 
-                            <Input
-                                value={textMessage}
-                                onChange={(e) => setTextMessage(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                type="text"
-                                className='flex-1 mr-2 bg-gray-700 text-white focus-visible:ring-transparent rounded-lg'
-                                placeholder="Type a message..."
-                            />
-                            <Button onClick={() => sendMessageHandler(selectedUser?._id)} className='bg-blue-600 hover:bg-blue-500'>
-                                Send
-                            </Button>
+                            {/* Content */}
+                            <div className='relative z-10 flex w-full gap-2'>
+                                <Input
+                                    type='text'
+                                    placeholder='Type a message...'
+                                    value={textMessage}
+                                    onChange={(e) => setTextMessage(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    className='flex-1 p-2 md:p-4 bg-gray-700 text-white rounded-lg focus:border-zinc-800'
+                                />
+                                <Button
+                                    className='text-white font-bold px-4 py-2 md:px-4 md:py-3 bg-blue-500 hover:bg-blue-600 focus:outline-none rounded-lg'
+                                    onClick={() => sendMessageHandler(selectedUser?._id)}
+                                >
+                                    <MessageCircleCode className='h-5 w-5' />
+                                </Button>
+                            </div>
                         </footer>
                     </>
                 ) : (
-                    <div className='flex flex-col items-center justify-center flex-1'>
-                        <MessageCircleCode className='w-24 h-24 md:w-32 md:h-32 my-4 text-gray-500' />
-                        <h1 className='font-medium text-gray-400'>Your messages</h1>
-                        <span className='text-gray-500'>Send a message to start a chat.</span>
+                    <div className='flex justify-center items-center h-full'>
+                        <p className='text-gray-200 text-lg font-medium'>Select a chat to start messaging</p>
                     </div>
                 )}
             </main>
