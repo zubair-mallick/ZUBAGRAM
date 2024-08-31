@@ -22,7 +22,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user && userProfile) {
-      setIsFollowing(userProfile.followers.includes(user._id));
+      setIsFollowing(userProfile.followers.includes(user?._id));
     }
   }, [userProfile, user]);
 

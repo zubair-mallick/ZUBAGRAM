@@ -33,16 +33,16 @@ const Post = ({ post }) => {
     const likeOrDislikeHandler = async () => {
         try {
             const action = liked ? 'dislike' : 'like';
-            const res = await axios.get(`http://localhost:3000/api/v1/post/${post._id}/${action}`, { withCredentials: true });
+            const res = await axios.get(`http://localhost:3000/api/v1/post/${post?._id}/${action}`, { withCredentials: true });
             if (res.data.success) {
                 const updatedLikes = liked ? postLike - 1 : postLike + 1;
                 setPostLike(updatedLikes);
                 setLiked(!liked);
 
                 const updatedPostData = posts.map(p =>
-                    p._id === post._id ? {
+                    p?._id === post?._id ? {
                         ...p,
-                        likes: liked ? p.likes.filter(id => id !== user._id) : [...p.likes, user._id]
+                        likes: liked ? p.likes.filter(id => id !== user?._id) : [...p.likes, user?._id]
                     } : p
                 );
                 dispatch(setPosts(updatedPostData));
@@ -55,7 +55,7 @@ const Post = ({ post }) => {
 
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`http://localhost:3000/api/v1/post/${post._id}/comment`, { text }, {
+            const res = await axios.post(`http://localhost:3000/api/v1/post/${post?._id}/comment`, { text }, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -66,7 +66,7 @@ const Post = ({ post }) => {
                 setComment(updatedCommentData);
 
                 const updatedPostData = posts.map(p =>
-                    p._id === post._id ? { ...p, comments: updatedCommentData } : p
+                    p?._id === post?._id ? { ...p, comments: updatedCommentData } : p
                 );
 
                 dispatch(setPosts(updatedPostData));
@@ -115,7 +115,7 @@ const Post = ({ post }) => {
                         </Avatar>
                         <div className='flex flex-col'>
                             <h1 className='font-semibold text-base'>{post.author?.username}</h1>
-                            {user?._id === post.author._id && <Badge variant="secondary">Author</Badge>}
+                            {user?._id === post.author?._id && <Badge variant="secondary">Author</Badge>}
                         </div>
                     </div>
                     <Dialog>
@@ -127,7 +127,7 @@ const Post = ({ post }) => {
                                 <Button variant='ghost' className="cursor-pointer w-fit text-[#ED4956] font-bold">Unfollow</Button>
                             )}
                             <Button variant='ghost' className="cursor-pointer w-fit text-white">Add to favorites</Button>
-                            {user && user?._id === post?.author._id && (
+                            {user && user?._id === post?.author?._id && (
                                 <Button onClick={deletePostHandler} variant='ghost' className="cursor-pointer w-fit text-white">Delete</Button>
                             )}
                         </DialogContent>

@@ -18,7 +18,7 @@ const Posts = () => {
       </div>
       <div className="relative z-10 flex flex-col items-center w-full">
         {posts.map((post) => (
-          <Post key={post._id} post={post} />
+          <Post key={post?._id} post={post} />
         ))}
       </div>
     </div>

@@ -48,14 +48,14 @@ const SearchModal = ({ isOpen, onClose }) => {
                 {searchResults.length > 0 && (
                     <div>
                         {searchResults.map(user => (
-                            <div key={user._id} className='flex items-center gap-2 p-2'>
+                            <div key={user?._id} className='flex items-center gap-2 p-2'>
                                 <Avatar>
                                     <AvatarImage src={user.profilePicture} alt="profile_image" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                                 <div>
                                     <h1 className='font-semibold text-sm'>
-                                        <a href={`/profile/${user._id}`}>{user.username}</a>
+                                        <a href={`/profile/${user?._id}`}>{user.username}</a>
                                     </h1>
                                     <span className='text-gray-300 text-sm'>{user.bio || 'Bio here...'}</span>
                                 </div>

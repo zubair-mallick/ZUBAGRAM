@@ -100,7 +100,7 @@ const ChatPage = () => {
                         const isOnline = onlineUsers.includes(suggestedUser?._id);
                         return (
                             <div
-                                key={suggestedUser._id}
+                                key={suggestedUser?._id}
                                 onClick={() => dispatch(setSelectedUser(suggestedUser))}
                                 className='relative flex gap-3 items-center p-3 rounded border border-gray-600 cursor-pointer transition-transform duration-300 hover:scale-105'
                                 style={{
@@ -137,7 +137,7 @@ const ChatPage = () => {
             </aside>
 
             {/* Chat Area Section */}
-            <main className='relative z-10 flex-1 flex flex-col'>
+            <main className='relative z-10 flex-1 flex flex-col '>
                 {selectedUser ? (
                     <>
                         <header

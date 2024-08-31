@@ -45,7 +45,7 @@ const CommentDialog = ({ open, setOpen }) => {
         setComment(updatedCommentData);
 
         const updatedPostData = posts.map(p =>
-          p._id === selectedPost._id ? { ...p, comments: updatedCommentData } : p
+          p?._id === selectedPost?._id ? { ...p, comments: updatedCommentData } : p
         );
         dispatch(setPosts(updatedPostData));
         toast.success(res.data.message);
@@ -98,7 +98,7 @@ const CommentDialog = ({ open, setOpen }) => {
             <hr className='border-gray-700' />
             <div className='flex-1 overflow-y-auto max-h-96 p-4'>
               {
-                comment.map((comment) => <Comment key={comment._id} comment={comment} />)
+                comment.map((comment) => <Comment key={comment?._id} comment={comment} />)
               }
             </div>
             <div className='p-4 bg-gray-900 rounded-b-lg'>
