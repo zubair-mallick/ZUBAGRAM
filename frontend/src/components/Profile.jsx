@@ -32,7 +32,7 @@ const Profile = () => {
     try {
       setIsFollowing(newFollowingStatus);
 
-      const res = await axios.post(`http://localhost:3000/api/v1/user/followorunfollow/${userId}`, {}, {
+      const res = await axios.post(`https://zubagram.onrender.com/api/v1/user/followorunfollow/${userId}`, {}, {
         withCredentials: true,
       });
 

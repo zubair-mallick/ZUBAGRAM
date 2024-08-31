@@ -13,7 +13,7 @@ const SuggestedUsers = () => {
     useEffect(() => {
         const fetchSuggestedUsers = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/api/v1/user/suggested', { withCredentials: true });
+                const res = await axios.get('https://zubagram.onrender.com/api/v1/user/suggested', { withCredentials: true });
                 if (res.data.success) {
                     const users = res.data.users;
                     dispatch(setSuggestedUsers(users));
@@ -43,7 +43,7 @@ const SuggestedUsers = () => {
                 [targetUserId]: !currentlyFollowing
             }));
 
-            const res = await axios.post(`http://localhost:3000/api/v1/user/followorunfollow/${targetUserId}`, {}, {
+            const res = await axios.post(`https://zubagram.onrender.com/api/v1/user/followorunfollow/${targetUserId}`, {}, {
                 withCredentials: true,
             });
 
